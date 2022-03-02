@@ -130,27 +130,27 @@ class Colour:
 def circle(radius):
     # init vars
     switch = 3 - (2 * radius)
-    points = set()
+    points = []
     x = 0
     y = radius
     # first quarter/octant starts clockwise at 12 o'clock
     while x <= y:
         # first quarter first octant
-        points.add((x, -y))
+        points.append((x, -y))
         # first quarter 2nd octant
-        points.add((y, -x))
+        points.append((y, -x))
         # second quarter 3rd octant
-        points.add((y, x))
+        points.append((y, x))
         # second quarter 4.octant
-        points.add((x, y))
+        points.append((x, y))
         # third quarter 5.octant
-        points.add((-x, y))
+        points.append((-x, y))
         # third quarter 6.octant
-        points.add((-y, x))
+        points.append((-y, x))
         # fourth quarter 7.octant
-        points.add((-y, -x))
+        points.append((-y, -x))
         # fourth quarter 8.octant
-        points.add((-x, -y))
+        points.append((-x, -y))
         if switch < 0:
             switch = switch + (4 * x) + 6
         else:
@@ -241,7 +241,7 @@ def draw_flower(screen, regions, scale, start_x, start_y, x_range, y_range, c, c
 
     # change this if we change the size of the template
     # I think the general form of this would be scale * (2*symmetry axis - 1)
-    sym_x = (scale*30)
+    sym_x = (scale*100)
 
     # make the below use input sprite size parameters in place of 4 and 11
 

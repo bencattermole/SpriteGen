@@ -48,24 +48,8 @@ def binary(n, digit_count):
         return s1
 
 
-head = binary(random.randint(0, 255), 8)
-body = binary(random.randint(0, 255), 8)
-legs = binary(random.randint(0, 255), 8)
-
-r = Robot.Robot(head, body, legs)
-
-
-list_of_flowers = []
-
-for i in range(0, 64):
-    p1 = binary(2**102 -1, 102)
-    p2 = binary(2**78 -1, 78)
-    p3 = binary(2**94 -1, 94)
-
-    c = Generator.Colour()
-    f = Flower.Flower(p1, p2, p3, c)
-    list_of_flowers.append(f)
-
+c = Generator.Colour()
+f = Flower.Flower(12, c)
 
 while running:
     for event in pygame.event.get():
@@ -74,8 +58,9 @@ while running:
             break
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
-                for flower in list_of_flowers:
-                    flower.roll()
+                f.roll()
+            if event.key == pygame.K_j:
+                f.shape_set()
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 5: scroll = max(scroll - 0.1, 0)
             if event.button == 4: scroll = min(scroll + 0.1, 5)
@@ -85,16 +70,11 @@ while running:
 
     # Generator.draw_flower(screen, regions, 16, 100, 100, 16, 33)
 
-    n = 0
-    for x in range(0, 8):
-        for y in range(0, 8):
-            f = list_of_flowers[n]
-            f_one = Regions.Region(f.p1_temp, f.p1)
-            f_two = Regions.Region(f.p2_temp, f.p2)
-            f_three = Regions.Region(f.p3_temp, f.p3)
+    f_three = Regions.Region(f.template, f.seed)
 
-            regions = [f_one, f_two, f_three]
-            Generator.draw_flower(screen, regions, 2, 20 + x * 128, 20 + y * 128, 16, 33, f.c, f.size)
-            n += 1
+    regions = [f_three]
+
+    # 16 ,33 and change flower size back to 17
+    Generator.draw_flower(screen, regions, 4, 512, 512, 100, 100, f.c, f.size)
 
     clock.tick(30)
