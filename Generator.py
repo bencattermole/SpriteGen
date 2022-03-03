@@ -18,7 +18,7 @@ class Colour:
         dom_col_test = random.randint(0, 10)
 
         if dom_col_test > 5:
-            choice = random.randint(0, 2)
+            choice = random.uniform(0, 1)
 
             frst = random.randint(0, 255)
             scnd = random.randint(0, 255)
@@ -32,7 +32,7 @@ class Colour:
             for_blbig = random.randint(0, 63)
             for_blsml = random.randint(0, 13)
 
-            if choice == 0:
+            if choice < 0.4:
                 # red dominant
                 self.dom = 'RED'
                 self.base_dark = (for_bd, 0, 0)
@@ -44,7 +44,7 @@ class Colour:
                 self.g = list_of_cands[1]
                 self.b = list_of_cands[2]
 
-            elif choice == 1:
+            elif choice < 0.6:
                 # green dominant
                 self.dom = 'GREEN'
                 self.base_dark = (0, for_bd, 0)
@@ -56,7 +56,7 @@ class Colour:
                 self.r = list_of_cands[1]
                 self.b = list_of_cands[2]
 
-            elif choice == 2:
+            elif choice <= 1:
                 # blue dominant
                 self.dom = 'BLUE'
                 self.base_dark = (0, 0, for_bd)
@@ -171,19 +171,13 @@ def draw_entity(screen, regions, scale, start_x, start_y, x_range, y_range):
 
     for x in range(0, x_range):
         for y in range(0, y_range):
+            if (x, y) in regions[0].map:
+                position = regions[0].map.index((x, y))
+                if regions[0].seed[position] == '1':
+                    drawn.append((x, y))
+                else:
+                    pass
 
-            # seems redundant we are checking every position to see if it appears in any of the regions
-
-            for region in regions:
-                if (x, y) in region.map:
-                    position = region.map.index((x, y))
-                    if region.seed[position] == '1':
-                        drawn.append((x, y))
-                    else:
-                        pass
-
-    for x in range(0, x_range):
-        for y in range(0, y_range):
             is_outline = False
             draw = False
             alpha = 4
@@ -241,7 +235,7 @@ def draw_flower(screen, regions, scale, start_x, start_y, x_range, y_range, c, c
 
     # change this if we change the size of the template
     # I think the general form of this would be scale * (2*symmetry axis - 1)
-    sym_x = (scale*100)
+    sym_x = (scale*2*x_range-scale*2)
 
     # make the below use input sprite size parameters in place of 4 and 11
 
@@ -325,6 +319,6 @@ def draw_flower(screen, regions, scale, start_x, start_y, x_range, y_range, c, c
     center += missing_four
     for points in center:
         if (points[0] % 2) == (points[1] % 2):
-            pygame.draw.rect(screen, (245, 212, 66), (start_x +(scale * (points[0] + x_range-1)), start_y + (scale * (points[1] + 16)), scale, scale))
+            pygame.draw.rect(screen, (245, 212, 66), (start_x + (scale * (points[0] + x_range-1)), start_y + (scale * (points[1] + y_range/2 - 1)), scale, scale))
         else:
-            pygame.draw.rect(screen, (255, 174, 0), (start_x + (scale * (points[0] + x_range - 1)), start_y + (scale * (points[1] + 16)), scale, scale))
+            pygame.draw.rect(screen, (255, 174, 0), (start_x + (scale * (points[0] + x_range-1)), start_y + (scale * (points[1] + y_range/2 - 1)), scale, scale))

@@ -28,6 +28,19 @@ for i in range(0, 64):
 for flower in list_of_flowers:
     flower.roll()
 
+    for x in range(0, x_range):
+        for y in range(0, y_range):
+
+            # seems redundant we are checking every position to see if it appears in any of the regions
+
+            for region in regions:
+                if (x, y) in region.map:
+                    position = region.map.index((x, y))
+                    if region.seed[position] == '1':
+                        drawn.append((x, y))
+                    else:
+                        pass
+
 n = 0
     for x in range(0, 8):
         for y in range(0, 8):

@@ -36,10 +36,11 @@ def get_polygon_vertices(sides, radius, ox, oy):
 
 
 class Flower:
-    def __init__(self, num_of_petals, col):
+    def __init__(self, num_of_petals, radius, col):
         self.c = col
         self.size = 1
-        self.vertices = get_polygon_vertices(num_of_petals, 16, 0, 0)
+        self.radius = radius
+        self.vertices = get_polygon_vertices(num_of_petals, self.radius, 0, 0)
         self.template = self.generate_template()
         self.seed = 0
         self.shape_set()
@@ -88,9 +89,9 @@ class Flower:
 
         halved = []
         for tile in sublime:
-            if tile[0] >= 0:
-                moved_tile_x = tile[0] + 50
-                moved_tile_y = tile[1] + 50
+            if tile[0] <= 0:
+                moved_tile_x = tile[0] + self.radius
+                moved_tile_y = tile[1] + self.radius
                 moved_tile = (moved_tile_x, moved_tile_y)
                 halved.append(moved_tile)
 
@@ -100,9 +101,13 @@ class Flower:
         total = len(self.template)
         self.seed = binary(2**total - 1, total)
 
+    def shape_unset(self):
+        total = len(self.template)
+        self.seed = binary(random.randint(0, 2 ** total - 1), total)
+
     def roll(self):
         new_num = random.randint(3, 20)
-        self.vertices = get_polygon_vertices(new_num, 27, 0, 0)
+        self.vertices = get_polygon_vertices(new_num, self.radius, 0, 0)
         self.template = self.generate_template()
         total = len(self.template)
         self.seed = binary(random.randint(0, 2**total - 1), total)

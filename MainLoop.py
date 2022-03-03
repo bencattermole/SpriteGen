@@ -49,7 +49,15 @@ def binary(n, digit_count):
 
 
 c = Generator.Colour()
-f = Flower.Flower(12, c)
+f = Flower.Flower(12, 27, c)
+
+list_of_flowers = []
+
+for i in range(0, 64):
+    co = Generator.Colour()
+    fl = Flower.Flower(12, 27, co)
+    list_of_flowers.append(fl)
+
 
 while running:
     for event in pygame.event.get():
@@ -58,9 +66,14 @@ while running:
             break
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
-                f.roll()
+                for flower in list_of_flowers:
+                    flower.roll()
             if event.key == pygame.K_j:
-                f.shape_set()
+                for flower in list_of_flowers:
+                    flower.shape_set()
+            if event.key == pygame.K_k:
+                for flower in list_of_flowers:
+                    flower.shape_unset()
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 5: scroll = max(scroll - 0.1, 0)
             if event.button == 4: scroll = min(scroll + 0.1, 5)
@@ -75,6 +88,24 @@ while running:
     regions = [f_three]
 
     # 16 ,33 and change flower size back to 17
-    Generator.draw_flower(screen, regions, 4, 512, 512, 100, 100, f.c, f.size)
+
+    # r_x_value = f.radius + 1
+    # r_y_value = r_x_value*2
+    # Generator.draw_flower(screen, regions, 1, 250, 250, r_x_value, r_y_value, f.c, f.size)
+
+    n = 0
+    for x in range(0, 8):
+        for y in range(0, 8):
+            tic = time.perf_counter()
+            f = list_of_flowers[n]
+            r_x_value = f.radius + 1
+            r_y_value = r_x_value * 2
+            f_three = Regions.Region(f.template, f.seed)
+
+            regions = [f_three]
+            Generator.draw_flower(screen, regions, 2, 20 + 128*x, 20 + 128 *y, r_x_value, r_y_value, f.c, f.size)
+            toc = time.perf_counter()
+            print(f"ran loop {toc - tic:0.4f} seconds")
+            n += 1
 
     clock.tick(30)
