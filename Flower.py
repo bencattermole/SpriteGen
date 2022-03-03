@@ -38,6 +38,7 @@ def get_polygon_vertices(sides, radius, ox, oy):
 class Flower:
     def __init__(self, num_of_petals, radius, col):
         self.c = col
+        self.d = 70
         self.size = 1
         self.radius = radius
         self.vertices = get_polygon_vertices(num_of_petals, self.radius, 0, 0)
@@ -52,17 +53,16 @@ class Flower:
 
         for vertex in self.vertices:
             # d is distance
-            d = 70
 
             if vertex[0] == ox:
-                xpos = int((vertex[0] + ox) / 2) + int(d / 10)
+                xpos = int((vertex[0] + ox) / 2) + int(self.d / 10)
                 ypos = int((vertex[1] + oy) / 2)
 
                 test = Regions.filled_region(vertex[0], vertex[1], ox, oy, int(xpos), int(ypos))
                 sublime += test
             elif vertex[1] == oy:
                 xpos = int((vertex[0] + ox) / 2)
-                ypos = int((vertex[1] + oy) / 2) + int(d / 10)
+                ypos = int((vertex[1] + oy) / 2) + int(self.d / 10)
 
                 test = Regions.filled_region(vertex[0], vertex[1], ox, oy, int(xpos), int(ypos))
                 sublime += test
@@ -77,7 +77,7 @@ class Flower:
 
                 a = (1 + m_per ** 2)
                 b = (2 * m_per * c - 2 * (mx + my * m_per))
-                C = ((mx ** 2 + my ** 2 - d) - 2 * my * c) + c ** 2
+                C = ((mx ** 2 + my ** 2 - self.d) - 2 * my * c) + c ** 2
 
                 discrim = b * b - 4 * a * C
 
@@ -107,6 +107,10 @@ class Flower:
 
     def roll(self):
         new_num = random.randint(3, 20)
+        #new_d = random.randint(10, 100)
+        #self.d = new_d
+        #new_radius = random.randint(15, 30)
+        #self.radius = new_radius
         self.vertices = get_polygon_vertices(new_num, self.radius, 0, 0)
         self.template = self.generate_template()
         total = len(self.template)

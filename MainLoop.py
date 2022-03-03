@@ -96,7 +96,6 @@ while running:
     n = 0
     for x in range(0, 8):
         for y in range(0, 8):
-            tic = time.perf_counter()
             f = list_of_flowers[n]
             r_x_value = f.radius + 1
             r_y_value = r_x_value * 2
@@ -104,8 +103,6 @@ while running:
 
             regions = [f_three]
             Generator.draw_flower(screen, regions, 2, 20 + 128*x, 20 + 128 *y, r_x_value, r_y_value, f.c, f.size)
-            toc = time.perf_counter()
-            print(f"ran loop {toc - tic:0.4f} seconds")
             n += 1
 
     clock.tick(30)
